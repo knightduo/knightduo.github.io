@@ -80,9 +80,15 @@ function colonMsStringToFractionalSecond(time) {
 
 function initialize() {
     document.getElementById("start_settoplayer").addEventListener("click", 
-        function() {setTime("start", lastPlayerTime)});
+        function() {
+            setTime("start", lastPlayerTime)
+            seek(loopStart)
+        });
     document.getElementById("end_settoplayer").addEventListener("click",
-        function() {setTime("end", lastPlayerTime)});
+        function() {
+            setTime("end", lastPlayerTime)
+            seek(loopEnd - 1)
+        });
 
     document.getElementById("start_seek").addEventListener("click",
         function() {seekToInputId("start")});
@@ -102,12 +108,17 @@ function initialize() {
     document.getElementById("form_editor").addEventListener("submit", onFormSubmit);
     document.getElementById("url_text").addEventListener("input", onFormSubmit);
 
-    document.getElementById("start").addEventListener("input", function() 
-    {
+    document.getElementById("start").addEventListener("input", function() {
         loopStart = getTime("start")
     });
     document.getElementById("end").addEventListener("input", function() {
-        loopEnd = getTime("end")
+        const time = getTime("end")
+        if (!!time && time > loopStart) {
+            document.getElementById("end").style=""
+            loopEnd = time
+        } else {
+            document.getElementById("end").style="color:red;"
+        }
     });
 }
 
@@ -126,7 +137,6 @@ function setTime(inputId, time) {
     }
     const newTimeString = fractionalSecondToColonMsString(time)
     document.getElementById(inputId).value = newTimeString
-    seek(time)
 }
 
 function getTime(inputId) {
