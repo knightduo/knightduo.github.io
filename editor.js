@@ -45,7 +45,6 @@ function sendPlayerStateChange(playerState) {
 
 function onCurrentSecond(time) {
     if (loop && (time + 0.1) >= loopEnd) {
-        console.log(`Looping now: ${time} >= ${loopEnd}`)
         seek(loopStart)
     }
 
@@ -96,13 +95,23 @@ function initialize() {
         function() {seek(getTime("end") - 1)});
         
     document.getElementById("start_minus").addEventListener("click", 
-        function() {fineTuneTime("start", false)});
+        function() {
+            fineTuneTime("start", false)
+            seekToInputId("start")
+        });
     document.getElementById("start_plus").addEventListener("click", 
-        function() {fineTuneTime("start", true)});
+        function() {
+            fineTuneTime("start", true)
+            seekToInputId("start")
+        });
     document.getElementById("end_minus").addEventListener("click", 
-        function() {fineTuneTime("end", false)});
+        function() {
+            fineTuneTime("end", false)
+            seek(getTime("end") - 1)});
     document.getElementById("end_plus").addEventListener("click", 
-        function() {fineTuneTime("end", true)});
+        function() {
+            fineTuneTime("end", true)
+            seek(getTime("end") - 1)});
     document.getElementById("loop_phrase").addEventListener("click", 
         function() {toggleLoop()});
     document.getElementById("form_editor").addEventListener("submit", onFormSubmit);
